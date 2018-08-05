@@ -6,14 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using TaskPlanner.DAL;
 using TaskPlanner.Models;
 
 namespace TaskPlanner.Controllers
 {
     public class TasksController : Controller
     {
-        private TaskPlannerContext db = new TaskPlannerContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tasks
         public ActionResult Index()

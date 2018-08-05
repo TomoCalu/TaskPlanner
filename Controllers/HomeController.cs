@@ -1,4 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace TaskPlanner.Controllers
 {
@@ -6,13 +10,6 @@ namespace TaskPlanner.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult YourTasks()
-        {
-            ViewBag.Message = "This page lets you see your tasks.";
-
             return View();
         }
     }

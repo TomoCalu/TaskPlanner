@@ -1,39 +1,17 @@
 ﻿@model IEnumerable<TaskPlanner.Models.Task>
 
 @{
-    ViewBag.Title = "YourTasks";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<h3>@ViewBag.Message</h3>
+<h2>Index</h2>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
-<div class="w-75 p-3" style="background-color: #eee;">
-@foreach (var item in Model)
-{
-    <div class="w-75 p-3" style="background-color: #eee;">
-        @Html.DisplayFor(modelItem => item.Name)
-        @Html.DisplayFor(model => item.Description)
-        <button type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-edit">
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID })|
-            </span>
-        </button>|
-        @Html.ActionLink("Details", "Details", new { id = item.ID })|
-        <button type="button" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash">
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-            </span>
-        </button>
-    </div>
-}
-</div>
-
-<!--<table class="table">
-    <tr>       
+<table class="table">
+    <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -52,19 +30,11 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID })|
-                </span>
-            </button>|
-            @Html.ActionLink("Details", "Details", new { id = item.ID })|
-            <button type="button" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash">
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                </span>
-            </button>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }
 
-</table>-->
+</table>
