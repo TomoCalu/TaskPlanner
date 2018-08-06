@@ -16,6 +16,7 @@ namespace TaskPlanner.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tasks
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -25,7 +26,20 @@ namespace TaskPlanner.Controllers
         {
             string currentUserId = User.Identity.GetUserId();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-            return db.Tasks.ToList().Where(x => x.User == currentUser);
+            IEnumerable<Task> myTasks = db.Tasks.ToList().Where(x => x.User == currentUser);
+
+            int completeCount = 0;
+            foreach (Task task in myTasks)
+            {
+                if (task.IsDone)
+                {
+                    completeCount++;
+                }
+            }
+
+            ViewBag.Percent = Math.Round(100f * ((float)completeCount / (float)myTasks.Count()));
+
+            return myTasks;
         }
 
         public ActionResult BuildTaskTable()

@@ -23,7 +23,7 @@
                 <ul class="nav navbar-nav">
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Tasks", "../Tasks", "Home")</li>
+                        <li>@Html.ActionLink("My Tasks", "../Tasks", "Home")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

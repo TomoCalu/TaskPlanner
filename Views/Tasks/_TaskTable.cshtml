@@ -1,28 +1,34 @@
 ﻿@model IEnumerable<TaskPlanner.Models.Task>
 
+<h1>My Tasks</h1>
+
+<div id="progressBarTask">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width:@(Html.AttributeEncode(ViewBag.Percent))%"></div>
+    </div>
+</div>
+
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDone)
-        </th>
-        <th></th>
-    </tr>
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @if (!item.IsDone)
+                {
+
+                    @Html.DisplayFor(modelItem => item.Description)
+                }
+                else
+                {
+                    <div class="CompletedTask">@Html.DisplayFor(modelItem => item.Description)</div>
+                }
             </td>
             <td>
                 @Html.CheckBoxFor(modelItem => item.IsDone, new { id=item.ID, @class = "ActiveCheck"})
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
