@@ -24,12 +24,12 @@ namespace TaskPlanner.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+        public System.Data.Entity.DbSet<TaskPlanner.Models.Task> Tasks { get; set; }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<TaskPlanner.Models.Task> Tasks { get; set; }
     }
 }

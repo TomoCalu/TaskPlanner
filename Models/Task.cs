@@ -10,10 +10,11 @@ namespace TaskPlanner.Models
     {
         public int ID { get; set; }
 
-        [StringLength(160, MinimumLength = 2)]
-        public string Name { get; set; }
-
         [Required, StringLength(160, MinimumLength = 2)]
         public string Description { get; set; }
+
+        public bool IsDone { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
     }
 }

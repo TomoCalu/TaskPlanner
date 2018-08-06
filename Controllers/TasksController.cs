@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,21 @@ namespace TaskPlanner.Controllers
         // GET: Tasks
         public ActionResult Index()
         {
-            return View(db.Tasks.ToList());
+            return View();
+        }
+
+        private IEnumerable<Task> GetMyTasks()
+        {
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            return db.Tasks.ToList().Where(x => x.User == currentUser);
+        }
+
+        public ActionResult BuildTaskTable()
+        {
+            
+           
+            return PartialView("_TaskTable", GetMyTasks());
         }
 
         // GET: Tasks/Details/5
@@ -32,6 +47,14 @@ namespace TaskPlanner.Controllers
             {
                 return HttpNotFound();
             }
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+            if (task.User != currentUser)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             return View(task);
         }
 
@@ -46,16 +69,36 @@ namespace TaskPlanner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description")] Task task)
+        public ActionResult Create([Bind(Include = "ID,Description,IsDone,")] Task task)
         {
             if (ModelState.IsValid)
             {
+                string currentUserId = User.Identity.GetUserId();
+                ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+                task.User = currentUser;
                 db.Tasks.Add(task);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             return View(task);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AJAXCreate([Bind(Include = "ID,Description")] Task task)
+        {
+            if (ModelState.IsValid)
+            {
+                string currentUserId = User.Identity.GetUserId();
+                ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+                task.User = currentUser;
+                task.IsDone = false;
+                db.Tasks.Add(task);
+                db.SaveChanges();
+            }
+
+            return PartialView("_TaskTable", GetMyTasks());
         }
 
         // GET: Tasks/Edit/5
@@ -70,6 +113,13 @@ namespace TaskPlanner.Controllers
             {
                 return HttpNotFound();
             }
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+            if (task.User != currentUser)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return View(task);
         }
 
@@ -78,7 +128,7 @@ namespace TaskPlanner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description")] Task task)
+        public ActionResult Edit([Bind(Include = "ID,Description,IsDone,")] Task task)
         {
             if (ModelState.IsValid)
             {
@@ -87,6 +137,27 @@ namespace TaskPlanner.Controllers
                 return RedirectToAction("Index");
             }
             return View(task);
+        }
+
+        [HttpPost]
+        public ActionResult AJAXEdit(int? id, bool value)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Task task = db.Tasks.Find(id);
+            if (task == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                task.IsDone = value;
+                db.Entry(task).State = EntityState.Modified;
+                db.SaveChanges();
+                return PartialView("_TaskTable", GetMyTasks());
+            }
         }
 
         // GET: Tasks/Delete/5
