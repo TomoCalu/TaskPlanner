@@ -18,9 +18,13 @@
             @Html.AntiForgeryToken()
             <div class="col-md-10">
                 <strong>New task:</strong>
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlattributes = new { @class = "form-control" } })
+                <button name="create-button" href="@Url.Action("Create", new { htmlAttributes = new { @class = "form-control" } })"
+                        class="btn btn-success hidden-lg d-flex flex-grow-1" style="margin-top:5px; width:280px;">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add
+                </button>
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                <!--<button name="add-button" type="button" value="BuildTaskTable" class="btn btn-success hidden-lg" style="margin-top:5px;">Add</button>-->
             </div>
         </div>
     }

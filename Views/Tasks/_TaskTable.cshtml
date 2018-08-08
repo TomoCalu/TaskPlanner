@@ -12,7 +12,11 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr style="display:flex; justify-content:space-between; font-size:18px;">
+            
+            <td>
+                @Html.CheckBoxFor(modelItem => item.IsDone, new { id=item.ID, @class = "ActiveCheck"})
+            </td>
             <td>
                 @if (!item.IsDone)
                 {
@@ -25,11 +29,14 @@
                 }
             </td>
             <td>
-                @Html.CheckBoxFor(modelItem => item.IsDone, new { id=item.ID, @class = "ActiveCheck"})
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                <a href="@Url.Action("Edit", new { id = item.ID})" class="btn btn-default">
+                   <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    Edit                   
+                </a> |
+            <a href="@Url.Action("Delete", new { id = item.ID})" class="btn btn-danger">
+                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                   Delete
+            </a>
             </td>
         </tr>
     }
