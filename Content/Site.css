@@ -27,7 +27,3 @@ textarea {
 .CompletedTask {
     text-decoration:line-through;
 }
-
-.create-button {
-    color:red;
-}

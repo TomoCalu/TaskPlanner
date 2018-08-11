@@ -10,7 +10,7 @@ namespace TaskPlanner.Models
     {
         public int ID { get; set; }
 
-        [Required, StringLength(160, MinimumLength = 2)]
+        [Required, StringLength(110, MinimumLength = 2)]
         public string Description { get; set; }
 
         public bool IsDone { get; set; }
