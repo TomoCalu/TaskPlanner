@@ -186,6 +186,14 @@ namespace TaskPlanner.Controllers
             {
                 return HttpNotFound();
             }
+            string currentUserId = User.Identity.GetUserId();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+            if (task.User != currentUser)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             return View(task);
         }
 
